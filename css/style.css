@@ -479,36 +479,3 @@ p{margin:6px 0 0}
   .buyline .btn{width:100%}
   .sticky-buy{bottom:88px}
 }
-/* =========================================
-   FIX: ESPAÇO PARA BARRAS FIXAS (RODAPÉ)
-   ========================================= */
-
-/* Dá espaço real no fim da página para a barra fixa não cobrir conteúdo */
-body{
-  padding-bottom: 130px; /* evita esconder botões/cards no final */
-}
-
-/* A barra fixa (Ver carrinho / Finalizar) fica sempre acima do conteúdo */
-.sticky-cta{
-  bottom: 12px;
-  z-index: 120; /* acima do conteúdo */
-}
-
-/* WhatsApp flutuante sobe um pouco pra não brigar com a barra */
-.wa-float{
-  bottom: 84px;
-  z-index: 121;
-}
-
-/* No "Monte seu Açaí" o card de adicionar ao carrinho estava colando na barra fixa */
-.sticky-buy{
-  bottom: 140px !important; /* sobe o card sticky acima da sticky-cta */
-  z-index: 60;
-}
-
-/* Evita qualquer elemento "pegar clique" por cima sem querer */
-.cardx, .builder, .sizes, .addons{
-  position: relative;
-  z-index: 5;
-}
-
