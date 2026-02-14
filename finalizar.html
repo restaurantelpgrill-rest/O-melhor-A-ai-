@@ -55,15 +55,24 @@
             <input id="cWhats" type="tel" placeholder="(31) 9xxxx-xxxx" />
           </label>
 
-          <label class="field full">
-            <span>Endereço completo *</span>
-            <input id="cAddress" type="text" placeholder="Rua, número, bairro" />
-          </label>
+          <!-- ✅ bloco que some quando for RETIRAR -->
+          <div id="deliveryFields" class="field full" style="display:block">
+            <div class="form-grid" style="grid-template-columns: repeat(2, minmax(0,1fr)); gap:10px; margin:0">
+              <label class="field full" style="margin:0">
+                <span>Endereço completo <span id="addrReq">*</span></span>
+                <input id="cAddress" type="text" placeholder="Rua, número, bairro" />
+              </label>
 
-          <label class="field full">
-            <span>Referência *</span>
-            <input id="cRef" type="text" placeholder="Perto de..." />
-          </label>
+              <label class="field full" style="margin:0">
+                <span>Referência <span id="refReq">*</span></span>
+                <input id="cRef" type="text" placeholder="Perto de..." />
+              </label>
+            </div>
+
+            <div class="mini muted" id="retirarHint" style="display:none; margin-top:8px">
+              🏬 Retirada: endereço não é necessário.
+            </div>
+          </div>
 
           <label class="field">
             <span>Pagamento *</span>
@@ -168,4 +177,3 @@
   <script src="js/app.js"></script>
 </body>
 </html>
-
