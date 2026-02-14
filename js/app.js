@@ -146,12 +146,20 @@ function renderBuilder(){
   `).join("");
 
   sizesEl.querySelectorAll("[data-size]").forEach(c=>{
-    c.addEventListener("click", ()=>{
+    const handler = (e)=>{
+      e.preventDefault();
+      e.stopPropagation();
       builderState.size = c.getAttribute("data-size");
+
       sizesEl.querySelectorAll(".choice").forEach(x=> x.classList.remove("active"));
       c.classList.add("active");
+
       updateBuilderTotal();
-    });
+    };
+
+    // ✅ pega no celular e no PC
+    c.addEventListener("pointerdown", handler, {passive:false});
+    c.addEventListener("click", handler);
   });
 
   addonsEl.innerHTML = addons.map(a => `
