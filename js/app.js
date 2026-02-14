@@ -138,24 +138,25 @@ function renderBuilder(){
   const sizes = window.MENU.builder.sizes;
   const addons = window.MENU.builder.addons;
 
+   // ✅ TAMANHOS (RADIO) - FUNCIONA EM QUALQUER CELULAR
   sizesEl.innerHTML = sizes.map(s => `
-    <div class="choice" data-size="${escapeAttr(s.id)}">
-      <div class="t">${escapeHtml(s.name)}</div>
-      <div class="s">${brl(s.price)}</div>
-    </div>
+    <label class="size-opt">
+      <input class="size-radio" type="radio" name="acaiSize" value="${escapeAttr(s.id)}">
+      <span class="size-box" aria-hidden="true"></span>
+      <span class="size-text">
+        <span class="size-name">${escapeHtml(s.name)}</span>
+        <span class="size-price">${brl(s.price)}</span>
+      </span>
+    </label>
   `).join("");
 
-  sizesEl.querySelectorAll("[data-size]").forEach(c=>{
-    const handler = (e)=>{
-      e.preventDefault();
-      e.stopPropagation();
-      builderState.size = c.getAttribute("data-size");
-
-      sizesEl.querySelectorAll(".choice").forEach(x=> x.classList.remove("active"));
-      c.classList.add("active");
-
-      updateBuilderTotal();
-    };
+  // evento por DELEGAÇÃO (mais forte que add em cada item)
+  sizesEl.addEventListener("change", (e)=>{
+    const radio = e.target.closest?.(".size-radio");
+    if(!radio) return;
+    builderState.size = radio.value;
+    updateBuilderTotal();
+  });
 
     // ✅ pega no celular e no PC
     c.addEventListener("pointerdown", handler, {passive:false});
