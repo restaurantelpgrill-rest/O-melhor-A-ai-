@@ -3,14 +3,11 @@
    ========================= */
 
 (function init(){
-  // Info bar (todas páginas)
   renderInfoBar();
 
-  // Nome da loja no index
   const sn = document.getElementById("storeName");
   if(sn) sn.textContent = window.STORE?.name || "Açaí";
 
-  // WhatsApp flutuante
   const wa = document.getElementById("waFloat");
   if(wa){
     const to = window.STORE?.whatsappTo || "553198832407";
@@ -20,7 +17,6 @@
     wa.rel = "noopener";
   }
 
-  // Home search filtro tiles
   const hs = document.getElementById("homeSearch");
   const hg = document.getElementById("homeGrid");
   if(hs && hg){
@@ -36,7 +32,6 @@
   bindCartUI();
   renderCartEverywhere();
 
-  // Render listas por página
   if(document.getElementById("listAcaisProntos")){
     renderProducts("listAcaisProntos", window.MENU.acaisProntos, "PRONTO");
   }
@@ -50,18 +45,15 @@
     renderProducts("listVitaminas", window.MENU.vitaminas, "VITAMINA");
   }
 
-  // Builder
   if(document.getElementById("sizes") && document.getElementById("addons")){
     renderBuilder();
   }
 
-  // Checkout
   if(document.getElementById("checkoutItems")){
     renderCheckoutSummary();
     bindCheckout();
   }
 
-  // Admin
   if(document.getElementById("adminList")){
     renderAdmin();
   }
@@ -217,7 +209,6 @@ function renderBuilder(){
         price: total
       });
 
-      // reset
       builderState.addons = new Set();
       builderState.size = null;
       sizesEl.querySelectorAll(".choice").forEach(x=> x.classList.remove("active"));
@@ -279,7 +270,6 @@ function renderCheckoutSummary(){
   const fee = getDeliveryFee();
   const subtotal = cartSubtotal(items);
 
-  // colher depende do select, então só coloca 0 aqui (bindCheckout atualiza)
   if(subX) subX.textContent = brl(subtotal);
   if(feeX) feeX.textContent = brl(fee);
   if(spoonX) spoonX.textContent = brl(0);
@@ -295,6 +285,11 @@ function bindCheckout(){
   const btnSend = document.getElementById("sendWhats");
   const hint = document.getElementById("formHint");
 
+  const deliveryFields = document.getElementById("deliveryFields");
+  const retirarHint = document.getElementById("retirarHint");
+  const addrReq = document.getElementById("addrReq");
+  const refReq = document.getElementById("refReq");
+
   const f = {
     name: document.getElementById("cName"),
     whats: document.getElementById("cWhats"),
@@ -304,6 +299,20 @@ function bindCheckout(){
     spoon: document.getElementById("cSpoon"),
     obs: document.getElementById("cObs"),
   };
+
+  function isRetirar(){
+    return getDeliveryMode() === "retirar";
+  }
+
+  function syncDeliveryVisibility(){
+    const retirar = isRetirar();
+
+    // some campos quando retirar
+    if(deliveryFields) deliveryFields.style.display = retirar ? "none" : "block";
+    if(retirarHint) retirarHint.style.display = retirar ? "block" : "none";
+    if(addrReq) addrReq.textContent = retirar ? "" : "*";
+    if(refReq) refReq.textContent = retirar ? "" : "*";
+  }
 
   function updateTotalsWithSpoon(){
     const items = loadCart();
@@ -321,14 +330,20 @@ function bindCheckout(){
 
   function validate(){
     const items = loadCart();
-    const ok =
+    const retirar = isRetirar();
+
+    const okBase =
       items.length > 0 &&
       f.name.value.trim() &&
       f.whats.value.trim() &&
-      f.address.value.trim() &&
-      f.ref.value.trim() &&
       f.pay.value.trim() &&
       f.spoon.value.trim();
+
+    const okEndereco = retirar
+      ? true
+      : (f.address.value.trim() && f.ref.value.trim());
+
+    const ok = okBase && okEndereco;
 
     if(hint){
       hint.style.color = ok ? "#16a34a" : "";
@@ -411,10 +426,12 @@ function bindCheckout(){
   const eBtn = document.getElementById("modeEntrega");
   const rBtn = document.getElementById("modeRetirar");
   if(eBtn && rBtn){
-    eBtn.onclick = ()=>{ setDeliveryMode("entrega"); renderCheckoutSummary(); updateTotalsWithSpoon(); };
-    rBtn.onclick = ()=>{ setDeliveryMode("retirar"); renderCheckoutSummary(); updateTotalsWithSpoon(); };
+    eBtn.onclick = ()=>{ setDeliveryMode("entrega"); renderCheckoutSummary(); syncDeliveryVisibility(); validate(); updateTotalsWithSpoon(); };
+    rBtn.onclick = ()=>{ setDeliveryMode("retirar"); renderCheckoutSummary(); syncDeliveryVisibility(); validate(); updateTotalsWithSpoon(); };
   }
 
+  // estado inicial correto
+  syncDeliveryVisibility();
   validate();
   updateTotalsWithSpoon();
 }
@@ -423,7 +440,6 @@ function bindCheckout(){
    ADMIN
    ========================= */
 function renderAdmin(){
-  // store fields
   const aStoreName = document.getElementById("aStoreName");
   const aFee = document.getElementById("aFee");
   const aEta = document.getElementById("aEta");
@@ -451,7 +467,6 @@ function renderAdmin(){
     location.reload();
   };
 
-  // menu list (override)
   const adminList = document.getElementById("adminList");
 
   const groups = [
@@ -460,8 +475,6 @@ function renderAdmin(){
     { key:"sorvetes", title:"Sorvetes", items: window.MENU.sorvetes },
     { key:"vitaminas", title:"Vitaminas", items: window.MENU.vitaminas },
   ];
-
-  const overrides = { acaisProntos:[], combos:[], sorvetes:[], vitaminas:[], builder:{ sizes:[], addons:[] } };
 
   adminList.innerHTML = groups.map(g => `
     <div class="admin-item">
@@ -486,7 +499,7 @@ function renderAdmin(){
 
   function collect(){
     const inputs = adminList.querySelectorAll("[data-g][data-id][data-f]");
-    const map = new Map(); // key -> obj
+    const map = new Map();
     inputs.forEach(el=>{
       const g = el.getAttribute("data-g");
       const id = el.getAttribute("data-id");
@@ -499,7 +512,6 @@ function renderAdmin(){
       obj.__group = g;
     });
 
-    // push by group
     const out = { acaisProntos:[], combos:[], sorvetes:[], vitaminas:[], builder:{ sizes:[], addons:[] } };
     map.forEach(v=>{
       const g = v.__group; delete v.__group;
@@ -516,7 +528,6 @@ function renderAdmin(){
 
   document.getElementById("resetMenu").onclick = ()=>{
     if(!confirm("Resetar produtos (voltar padrão)?")) return;
-    // mantém store override, reseta só menu
     localStorage.removeItem(window.__ADMIN.MENU_KEY);
     alert("Produtos resetados. Recarregando...");
     location.reload();
@@ -528,4 +539,3 @@ function renderAdmin(){
    ========================= */
 function escapeHtml(s){ return String(s ?? "").replace(/[&<>"']/g, m => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m])); }
 function escapeAttr(s){ return escapeHtml(s).replace(/"/g,'&quot;'); }
-
