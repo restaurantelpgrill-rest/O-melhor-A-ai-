@@ -1,60 +1,163 @@
 <!doctype html>
-<html lang="pt-br"> 
-<head> <meta charset="utf-8" /> <meta name="viewport" content="width=device-width,initial-
-                                 
-/* ======= Componentes do Monte seu Açaí ======= */
-.cover.small{ padding-bottom: 14px; }
-.backlink{
-  display:inline-flex;
-  width:36px;height:36px;
-  align-items:center;justify-content:center;
-  border-radius:12px;
-  border:1px solid rgba(0,0,0,.08);
-  background: rgba(255,255,255,.6);
-  text-decoration:none;
-  color: inherit;
-  font-weight:900;
-  margin-right:10px;
-}
+<html lang="pt-br">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <meta name="theme-color" content="#f5f3ff" />
+  <title>Cardápio — Açaí</title>
+  <link rel="stylesheet" href="css/style.css" />
+</head>
+<body class="app">
 
-.panel{
-  background: rgba(255,255,255,.72);
-  border: 1px solid rgba(17,24,39,.08);
-  border-radius: 18px;
-  padding: 14px;
-  margin: 14px 0;
-}
-.panel-head h2{ margin:0; font-size:16px; }
-.panel-head p{ margin:8px 0 0; }
+  <header class="cover">
+    <div class="cover-bg" aria-hidden="true"></div>
 
-.list{
-  display:grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: 10px;
-  margin-top: 12px;
-}
-@media (max-width: 720px){
-  .list{ grid-template-columns: 1fr; }
-}
+    <div class="topbar">
+      <div class="brand">
+        <img class="brand-logo" src="img/logo.png" alt="Logo da loja" onerror="this.style.display='none'">
+        <div class="brand-txt">
+          <h1 id="storeName">LP Grill Açaí</h1>
+          <p>Pedidos rápidos • WhatsApp</p>
+        </div>
+      </div>
 
-.item{
-  appearance:none;
-  border: 1px solid rgba(17,24,39,.10);
-  background: rgba(255,255,255,.65);
-  border-radius: 16px;
-  padding: 12px;
-  display:flex;
-  align-items:center;
-  justify-content:space-between;
-  gap:12px;
-  cursor:pointer;
-  text-align:left;
-}
-.item.active{
-  border-color: rgba(34,197,94,.85);
-  box-shadow: 0 0 0 3px rgba(34,197,94,.18) inset;
-}
-.item-title{ font-weight: 900; }
-.item-price{ font-weight: 900; }
-.price-big{ font-size: 26px; font-weight: 1000; }
-.full{ width:100%; }
+      <button class="cart-btn" id="openCart" aria-label="Abrir carrinho">
+        <span class="cart-ico">🛒</span>
+        <span class="cart-badge" id="cartCount">0</span>
+      </button>
+    </div>
+
+    <div class="cover-info" id="infoBar"></div>
+
+    <div class="cover-search">
+      <input id="homeSearch" type="search" placeholder="Buscar categoria..." autocomplete="off" />
+    </div>
+  </header>
+
+  <main class="container">
+    <section class="grid" id="homeGrid">
+      <a class="tile pulse" href="acais-prontos.html" data-key="acai açaí pronto prontos">
+        <div class="tile-ico">🥣</div>
+        <div class="tile-title">Açaís Prontos</div>
+        <div class="tile-sub">6 opções rápidas</div>
+      </a>
+
+      <a class="tile pulse" href="monte-seu-acai.html" data-key="monte montar açaí adicional adicionais tamanho">
+        <div class="tile-ico">🧩</div>
+        <div class="tile-title">Monte seu Açaí</div>
+        <div class="tile-sub">4 tamanhos + 12 adicionais</div>
+      </a>
+
+      <a class="tile pulse" href="combos.html" data-key="combo combos promoção 2x">
+        <div class="tile-ico">🎁</div>
+        <div class="tile-title">Combos</div>
+        <div class="tile-sub">4 promoções</div>
+      </a>
+
+      <a class="tile pulse" href="sorvetes.html" data-key="sorvete sorvetes sobremesa">
+        <div class="tile-ico">🍨</div>
+        <div class="tile-title">Sorvetes</div>
+        <div class="tile-sub">4 opções</div>
+      </a>
+
+      <a class="tile pulse" href="vitaminas.html" data-key="vitamina vitaminas shake">
+        <div class="tile-ico">🥤</div>
+        <div class="tile-title">Vitaminas</div>
+        <div class="tile-sub">4 opções</div>
+      </a>
+
+      <a class="tile pulse highlight" href="finalizar.html" data-key="finalizar pedido endereço pagamento colher">
+        <div class="tile-ico">✅</div>
+        <div class="tile-title">Finalizar Pedido</div>
+        <div class="tile-sub">Enviar no WhatsApp</div>
+      </a>
+    </section>
+
+    <section class="reviews">
+      <div class="reviews-head">
+        <h2>Avaliações</h2>
+        <div class="rating">
+          <span class="stars">⭐</span>
+          <strong>4.9</strong>
+          <span class="muted">/ 5</span>
+        </div>
+      </div>
+
+      <div class="review-cards">
+        <article class="review">
+          <div class="r-top"><strong>Mariana S.</strong><span class="muted">• hoje</span></div>
+          <p>Chegou rápido e bem embalado. Açaí muito cremoso!</p>
+        </article>
+        <article class="review">
+          <div class="r-top"><strong>João P.</strong><span class="muted">• ontem</span></div>
+          <p>Montar o açaí ficou fácil demais. Vou pedir sempre por aqui.</p>
+        </article>
+        <article class="review">
+          <div class="r-top"><strong>Aline R.</strong><span class="muted">• esta semana</span></div>
+          <p>Combo 2x500ml vale muito. Atendimento top.</p>
+        </article>
+      </div>
+
+      <button class="ghost-btn" type="button">Ver mais avaliações</button>
+
+      <div class="mini muted" style="margin-top:10px; text-align:center">
+        Admin (para você): <a class="link" href="admin.html">abrir painel</a>
+      </div>
+    </section>
+  </main>
+
+  <a class="wa-float" id="waFloat" href="#" aria-label="WhatsApp">
+    <img src="img/whatsapp.png" alt="WhatsApp" onerror="this.remove(); this.parentElement.textContent='WhatsApp';">
+  </a>
+
+  <div class="sticky-cta" id="stickyCTA" hidden>
+    <button class="cta" id="ctaOpenCart" type="button">
+      <span>Ver carrinho</span>
+      <strong id="ctaTotal">R$ 0,00</strong>
+    </button>
+    <a class="cta primary" href="finalizar.html">
+      Finalizar
+    </a>
+  </div>
+
+  <aside class="drawer" id="cartDrawer" aria-hidden="true">
+    <div class="drawer-backdrop" id="closeCartBackdrop"></div>
+    <div class="drawer-panel" role="dialog" aria-modal="true" aria-label="Carrinho">
+      <div class="drawer-head">
+        <div>
+          <h3>Seu carrinho</h3>
+          <p class="muted">Itens + taxa (se entrega)</p>
+        </div>
+        <button class="icon-btn" id="closeCart" aria-label="Fechar">✕</button>
+      </div>
+
+      <div class="drawer-body">
+        <div class="delivery-toggle">
+          <button class="dt-btn" id="modeEntrega" type="button">🚚 Entrega</button>
+          <button class="dt-btn" id="modeRetirar" type="button">🏬 Retirar</button>
+        </div>
+
+        <div id="cartItems"></div>
+      </div>
+
+      <div class="drawer-foot">
+        <div class="totals">
+          <div class="row"><span>Subtotal</span><strong id="subTotal">R$ 0,00</strong></div>
+          <div class="row"><span>Taxa</span><strong id="deliveryFee">R$ 0,00</strong></div>
+          <div class="row total"><span>Total</span><strong id="grandTotal">R$ 0,00</strong></div>
+          <div class="mini muted">⏱️ Tempo médio: <span id="etaText">30–60 min</span></div>
+        </div>
+
+        <div class="drawer-actions">
+          <button class="btn light" id="clearCart" type="button">Limpar</button>
+          <a class="btn primary" href="finalizar.html">Finalizar</a>
+        </div>
+      </div>
+    </div>
+  </aside>
+
+  <script src="js/data.js"></script>
+  <script src="js/cart.js"></script>
+  <script src="js/app.js"></script>
+</body>
+</html>
