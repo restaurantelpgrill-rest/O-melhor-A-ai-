@@ -3,207 +3,251 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <meta name="theme-color" content="#0b0b0c" />
+  <meta name="theme-color" content="#f5f3ff" />
   <title>LP Grill — Monte seu Açaí</title>
-
-  <link rel="stylesheet" href="css/estilo.css" />
-
-  <style>
-    /* fallback caso seu CSS geral falhe */
-    .page{max-width:980px;margin:0 auto;padding:16px}
-    .headrow{display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap}
-    .back{display:inline-flex;align-items:center;gap:10px;text-decoration:none}
-    .back strong{font-size:14px}
-    .card{background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.08);border-radius:18px;padding:14px;margin:12px 0}
-    .grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
-    @media (max-width:720px){.grid{grid-template-columns:1fr}}
-    .opt{display:flex;align-items:center;justify-content:space-between;gap:10px;padding:12px;border-radius:14px;border:1px solid rgba(255,255,255,.10);background:rgba(0,0,0,.25);cursor:pointer}
-    .opt:hover{border-color:rgba(34,197,94,.55)}
-    .opt.active{border-color:rgba(34,197,94,.95);box-shadow:0 0 0 3px rgba(34,197,94,.20) inset}
-    .muted{opacity:.8;font-size:13px}
-    .price{font-weight:800}
-    .row{display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap}
-    .totalbox{display:flex;align-items:baseline;gap:10px}
-    .total{font-size:28px;font-weight:900}
-    .btn{appearance:none;border:0;border-radius:14px;padding:14px 14px;font-weight:900;cursor:pointer}
-    .btn.ok{background:#22c55e;color:#07140b}
-    .btn.ok:disabled{opacity:.45;cursor:not-allowed}
-  </style>
+  <link rel="stylesheet" href="css/style.css" />
 </head>
 
-<body>
-  <main class="page">
-    <div class="headrow">
-      <a class="back" href="index.html">
-        <strong>← Voltar ao Menu</strong>
-      </a>
-      <div class="muted">Monte seu Açaí • escolha 1 tamanho + adicionais</div>
+<body class="app">
+
+  <header class="cover">
+    <div class="cover-bg" aria-hidden="true"></div>
+
+    <div class="topbar">
+      <div class="brand">
+        <a class="backlink" href="index.html" aria-label="Voltar ao menu">←</a>
+
+        <div class="brand-txt">
+          <h1>Monte seu Açaí</h1>
+          <p>Escolha 1 tamanho + adicionais</p>
+        </div>
+      </div>
+
+      <button class="cart-btn" id="openCart" aria-label="Abrir carrinho">
+        <span class="cart-ico">🛒</span>
+        <span class="cart-badge" id="cartCount">0</span>
+      </button>
     </div>
 
-    <h1 style="margin:12px 0 6px">Monte seu Açaí</h1>
-    <p class="muted" style="margin:0 0 10px">Selecione o <b>tamanho obrigatório</b> para liberar “Adicionar ao carrinho”.</p>
+    <div class="cover-info" id="infoBar"></div>
+  </header>
 
-    <section class="card">
-      <h2 style="margin:0 0 10px">1) Tamanho (obrigatório)</h2>
-      <div id="sizes" class="grid"></div>
-    </section>
-
-    <section class="card">
-      <h2 style="margin:0 0 10px">2) Acréscimos</h2>
-      <div id="extras" class="grid"></div>
-    </section>
-
-    <section class="card">
-      <div class="row">
-        <div class="totalbox">
-          <span class="muted">Total do item</span>
-          <span class="total" id="total">R$ 0,00</span>
-        </div>
-        <button class="btn ok" id="addBtn" disabled>Adicionar ao carrinho</button>
+  <main class="container">
+    <section class="panel">
+      <div class="panel-head">
+        <h2>1) Tamanho (obrigatório)</h2>
+        <p class="muted">Selecione 1 opção para liberar “Adicionar ao carrinho”.</p>
       </div>
-      <p class="muted" style="margin:10px 0 0">Taxa de entrega aparece no total final (se Entrega).</p>
+      <div class="builder-grid" id="acaiSizes"></div>
+    </section>
+
+    <section class="panel">
+      <div class="panel-head">
+        <h2>2) Acréscimos</h2>
+        <p class="muted">Você pode escolher vários.</p>
+      </div>
+      <div class="builder-grid" id="acaiExtras"></div>
+    </section>
+
+    <section class="panel">
+      <div class="builder-footer">
+        <div>
+          <div class="muted">Total do item</div>
+          <div class="builder-total" id="acaiTotal">R$ 0,00</div>
+        </div>
+
+        <button class="btn primary" id="addAcaiToCart" disabled>
+          Adicionar ao carrinho
+        </button>
+      </div>
+
+      <div style="margin-top:10px">
+        <a class="btn light" href="finalizar.html" style="width:100%">Ir para Finalizar</a>
+      </div>
     </section>
   </main>
 
+  <a class="wa-float" id="waFloat" href="#" aria-label="WhatsApp">
+    <img src="img/whatsapp.png" alt="WhatsApp" onerror="this.remove(); this.parentElement.textContent='WhatsApp';">
+  </a>
+
+  <div class="sticky-cta" id="stickyCTA" hidden>
+    <button class="cta" id="ctaOpenCart" type="button">
+      <span>Ver carrinho</span>
+      <strong id="ctaTotal">R$ 0,00</strong>
+    </button>
+    <a class="cta primary" href="finalizar.html">Finalizar</a>
+  </div>
+
+  <!-- Carrinho (mesmo do index) -->
+  <aside class="drawer" id="cartDrawer" aria-hidden="true">
+    <div class="drawer-backdrop" id="closeCartBackdrop"></div>
+    <div class="drawer-panel" role="dialog" aria-modal="true" aria-label="Carrinho">
+      <div class="drawer-head">
+        <div>
+          <h3>Seu carrinho</h3>
+          <p class="muted">Itens + taxa (se entrega)</p>
+        </div>
+        <button class="icon-btn" id="closeCart" aria-label="Fechar">✕</button>
+      </div>
+
+      <div class="drawer-body">
+        <div class="delivery-toggle">
+          <button class="dt-btn" id="modeEntrega" type="button">🚚 Entrega</button>
+          <button class="dt-btn" id="modeRetirar" type="button">🏬 Retirar</button>
+        </div>
+
+        <div id="cartItems"></div>
+      </div>
+
+      <div class="drawer-foot">
+        <div class="totals">
+          <div class="row"><span>Subtotal</span><strong id="subTotal">R$ 0,00</strong></div>
+          <div class="row"><span>Taxa</span><strong id="deliveryFee">R$ 0,00</strong></div>
+          <div class="row total"><span>Total</span><strong id="grandTotal">R$ 0,00</strong></div>
+          <div class="mini muted">⏱️ Tempo médio: <span id="etaText">30–60 min</span></div>
+        </div>
+
+        <div class="drawer-actions">
+          <button class="btn light" id="clearCart" type="button">Limpar</button>
+          <a class="btn primary" href="finalizar.html">Finalizar</a>
+        </div>
+      </div>
+    </div>
+  </aside>
+
+  <script src="js/data.js"></script>
+  <script src="js/cart.js"></script>
+  <script src="js/app.js"></script>
+
+  <!-- Script da página (visual e carrinho) -->
   <script>
-    // ======= DADOS (edite aqui se quiser) =======
-    const DATA = {
+    const ACaiData = (window.DATA && window.DATA.monteAcai) ? window.DATA.monteAcai : {
       sizes: [
-        { id:"300",  name:"300ml",  price: 12.00 },
-        { id:"500",  name:"500ml",  price: 18.00 },
-        { id:"700",  name:"700ml",  price: 24.00 },
-        { id:"1000", name:"1 Litro", price: 32.00 }
+        { id:"300",  name:"300ml",  price:12.00 },
+        { id:"500",  name:"500ml",  price:18.00 },
+        { id:"700",  name:"700ml",  price:24.00 },
+        { id:"1000", name:"1 Litro", price:32.00 }
       ],
       extras: [
-        { id:"leite_po", name:"Leite em pó", price: 2.50 },
-        { id:"paçoca", name:"Paçoca", price: 2.50 },
-        { id:"granola", name:"Granola", price: 2.50 },
-        { id:"castanha", name:"Castanha", price: 3.50 },
-        { id:"chocoball", name:"Chocoball", price: 3.00 },
-        { id:"ovomaltine", name:"Ovomaltine", price: 4.00 },
-        { id:"banana", name:"Banana", price: 2.50 },
-        { id:"morango", name:"Morango", price: 4.00 },
-        { id:"kiwi", name:"Kiwi", price: 4.50 },
-        { id:"nutella", name:"Nutella", price: 5.00 },
-        { id:"doce_leite", name:"Doce de leite", price: 3.50 },
-        { id:"mel", name:"Mel", price: 3.00 }
+        { id:"leite_po", name:"Leite em pó", price:2.50 },
+        { id:"pacoca", name:"Paçoca", price:2.50 },
+        { id:"granola", name:"Granola", price:2.50 },
+        { id:"castanha", name:"Castanha", price:3.50 },
+        { id:"chocoball", name:"Chocoball", price:3.00 },
+        { id:"ovomaltine", name:"Ovomaltine", price:4.00 },
+        { id:"banana", name:"Banana", price:2.50 },
+        { id:"morango", name:"Morango", price:4.00 },
+        { id:"kiwi", name:"Kiwi", price:4.50 },
+        { id:"nutella", name:"Nutella", price:5.00 },
+        { id:"doce_leite", name:"Doce de leite", price:3.50 },
+        { id:"mel", name:"Mel", price:3.00 }
       ]
     };
 
-    // ======= UTIL =======
     const money = (v)=> v.toLocaleString("pt-BR",{style:"currency",currency:"BRL"});
     const $ = (s)=> document.querySelector(s);
 
-    // ======= ESTADO =======
     let selectedSize = null;
     const selectedExtras = new Set();
 
-    // ======= RENDER =======
-    function render() {
-      const sizesEl = $("#sizes");
-      const extrasEl = $("#extras");
-      sizesEl.innerHTML = "";
-      extrasEl.innerHTML = "";
-
-      DATA.sizes.forEach(s=>{
-        const el = document.createElement("button");
-        el.type="button";
-        el.className = "opt" + (selectedSize?.id===s.id ? " active":"");
-        el.innerHTML = `
-          <div>
-            <div style="font-weight:900">${s.name}</div>
-            <div class="muted">Base do açaí</div>
-          </div>
-          <div class="price">${money(s.price)}</div>
-        `;
-        el.onclick = ()=>{ selectedSize = s; update(); };
-        sizesEl.appendChild(el);
-      });
-
-      DATA.extras.forEach(x=>{
-        const on = selectedExtras.has(x.id);
-        const el = document.createElement("button");
-        el.type="button";
-        el.className = "opt" + (on ? " active":"");
-        el.innerHTML = `
-          <div>
-            <div style="font-weight:900">${x.name}</div>
-            <div class="muted">${on ? "Selecionado" : "Toque para adicionar"}</div>
-          </div>
-          <div class="price">${money(x.price)}</div>
-        `;
-        el.onclick = ()=>{
-          if(selectedExtras.has(x.id)) selectedExtras.delete(x.id);
-          else selectedExtras.add(x.id);
-          update();
-        };
-        extrasEl.appendChild(el);
-      });
-
-      update();
+    function makeChoiceCard({title, sub, price, active, onClick}) {
+      const btn = document.createElement("button");
+      btn.type = "button";
+      btn.className = "choice" + (active ? " active" : "");
+      btn.innerHTML = `
+        <div class="choice-left">
+          <div class="choice-title">${title}</div>
+          <div class="choice-sub muted">${sub || ""}</div>
+        </div>
+        <div class="choice-price">${money(price)}</div>
+      `;
+      btn.addEventListener("click", onClick);
+      return btn;
     }
 
     function calcTotal(){
       let t = 0;
       if(selectedSize) t += selectedSize.price;
       for(const id of selectedExtras){
-        const it = DATA.extras.find(e=>e.id===id);
+        const it = ACaiData.extras.find(e=>e.id===id);
         if(it) t += it.price;
       }
       return t;
     }
 
-    function update(){
-      const total = calcTotal();
-      $("#total").textContent = money(total);
-      $("#addBtn").disabled = !selectedSize;
-      // re-render só o visual "active"
-      renderActiveStates();
+    function updateTotal(){
+      $("#acaiTotal").textContent = money(calcTotal());
+      $("#addAcaiToCart").disabled = !selectedSize;
     }
 
-    function renderActiveStates(){
-      // reaplica classes sem refazer tudo
-      document.querySelectorAll("#sizes .opt").forEach((btn,i)=>{
-        const s = DATA.sizes[i];
-        btn.classList.toggle("active", selectedSize?.id===s.id);
+    function render(){
+      const sizesEl  = $("#acaiSizes");
+      const extrasEl = $("#acaiExtras");
+      sizesEl.innerHTML = "";
+      extrasEl.innerHTML = "";
+
+      ACaiData.sizes.forEach(s=>{
+        sizesEl.appendChild(makeChoiceCard({
+          title: s.name,
+          sub: "Base do açaí",
+          price: s.price,
+          active: selectedSize?.id === s.id,
+          onClick: ()=>{
+            selectedSize = s;
+            render(); // simples e estável
+          }
+        }));
       });
-      document.querySelectorAll("#extras .opt").forEach((btn,i)=>{
-        const x = DATA.extras[i];
-        btn.classList.toggle("active", selectedExtras.has(x.id));
+
+      ACaiData.extras.forEach(x=>{
+        const on = selectedExtras.has(x.id);
+        extrasEl.appendChild(makeChoiceCard({
+          title: x.name,
+          sub: on ? "Selecionado" : "Toque para adicionar",
+          price: x.price,
+          active: on,
+          onClick: ()=>{
+            if(on) selectedExtras.delete(x.id);
+            else selectedExtras.add(x.id);
+            render();
+          }
+        }));
       });
+
+      updateTotal();
     }
 
-    // ======= CARRINHO (localStorage) =======
     function getCart(){
-      try{ return JSON.parse(localStorage.getItem("lp_cart")||"[]"); }catch(e){ return []; }
+      if(typeof window.cartGet === "function") return window.cartGet();
+      try{ return JSON.parse(localStorage.getItem("lp_cart") || "[]"); }catch(e){ return []; }
     }
-    function setCart(cart){
-      localStorage.setItem("lp_cart", JSON.stringify(cart));
+    function setCart(c){
+      if(typeof window.cartSet === "function") return window.cartSet(c);
+      localStorage.setItem("lp_cart", JSON.stringify(c));
     }
 
-    $("#addBtn").addEventListener("click", ()=>{
+    $("#addAcaiToCart").addEventListener("click", ()=>{
       if(!selectedSize) return;
 
       const extrasArr = Array.from(selectedExtras).map(id=>{
-        const it = DATA.extras.find(e=>e.id===id);
+        const it = ACaiData.extras.find(e=>e.id===id);
         return it ? { id: it.id, name: it.name, price: it.price } : null;
       }).filter(Boolean);
 
       const item = {
-        type: "monte_acai",
+        id: "monte-acai-" + Date.now(),
         name: `Monte seu Açaí — ${selectedSize.name}`,
-        size: { id: selectedSize.id, name: selectedSize.name, price: selectedSize.price },
-        extras: extrasArr,
-        total: calcTotal(),
-        qty: 1
+        qty: 1,
+        price: calcTotal(),
+        meta: { size: selectedSize, extras: extrasArr }
       };
 
       const cart = getCart();
       cart.push(item);
       setCart(cart);
 
-      // volta pro menu (ou você pode mandar pra finalizar.html se preferir)
-      window.location.href = "index.html";
+      if(typeof window.openCart === "function") window.openCart();
     });
 
     render();
