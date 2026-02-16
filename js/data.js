@@ -8,14 +8,14 @@ window.STORE_DEFAULT = {
   whatsappTo: "553198832407", // +55 31 9883-2407
   deliveryFee: 5.00,
   eta: "30–60 min",
-  hours: "Sábado até 00:00",
+  hours: "segunda a Sábado até 00:00",
   welcomeMsg: "Olá! Vim pelo cardápio online 😊"
 };
 
 window.MENU_DEFAULT = {
   acaisProntos: [
     { id:"ap1", name:"Açaí Tradicional 300ml", desc:"Açaí cremoso + banana + granola (opcional).", price:16.90, badge:"300ml", img:"img/acai_tradicional_300.png" },
-    { id:"ap2", name:"Açaí Tradicional 500ml", desc:"O clássico mais pedido. Energia e sabor.", price:24.90, badge:"500ml", img:"img/acai_tradicional_500.png" },
+    { id:"ap2", name:"Açaí Tradicional 500ml", desc:"O clássico mais pedido. Energia e or.", price:24.90, badge:"500ml", img:"img/acai_tradicional_500.png" },
     { id:"ap3", name:"Açaí Tradicional 700ml", desc:"Para quem quer caprichar de verdade.", price:32.90, badge:"700ml", img:"img/acai_tradicional_700.png" },
     { id:"ap4", name:"Açaí Especial Ninho 500ml", desc:"Leite Ninho + leite condensado (equilíbrio perfeito).", price:29.90, badge:"500ml", img:"img/acai_ninho_500.png" },
     { id:"ap5", name:"Açaí Especial Morango 500ml", desc:"Morango + chantilly (suave e refrescante).", price:29.90, badge:"500ml", img:"img/acai_morango_500.png" },
