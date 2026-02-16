@@ -1,128 +1,23 @@
-<!doctype html>
-<html lang="pt-br">
-<head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <meta name="theme-color" content="#f5f3ff" />
-  <title>LP Grill — Monte seu Açaí</title>
-  <link rel="stylesheet" href="css/style.css" />
-</head>
+<script>
+(() => {
+  const money = (v)=> Number(v||0).toLocaleString("pt-BR",{style:"currency",currency:"BRL"});
+  const $ = (s)=> document.querySelector(s);
 
-<body class="app">
+  function getBuilderData(){
+    // Prioridade 1: padrão do seu projeto (MENU.builder)
+    const b = window.MENU && window.MENU.builder ? window.MENU.builder : null;
+    if(b && Array.isArray(b.sizes) && Array.isArray(b.addons)){
+      return { sizes: b.sizes, extras: b.addons };
+    }
 
-  <header class="cover">
-    <div class="cover-bg" aria-hidden="true"></div>
+    // Prioridade 2: se você tiver outro formato (DATA.monteAcai)
+    const d = window.DATA && window.DATA.monteAcai ? window.DATA.monteAcai : null;
+    if(d && Array.isArray(d.sizes) && Array.isArray(d.extras)){
+      return { sizes: d.sizes, extras: d.extras };
+    }
 
-    <div class="topbar">
-      <div class="brand">
-        <a class="backlink" href="index.html" aria-label="Voltar ao menu">←</a>
-
-        <div class="brand-txt">
-          <h1>Monte seu Açaí</h1>
-          <p>Escolha 1 tamanho + adicionais</p>
-        </div>
-      </div>
-
-      <button class="cart-btn" id="openCart" aria-label="Abrir carrinho">
-        <span class="cart-ico">🛒</span>
-        <span class="cart-badge" id="cartCount">0</span>
-      </button>
-    </div>
-
-    <div class="cover-info" id="infoBar"></div>
-  </header>
-
-  <main class="container">
-    <section class="panel">
-      <div class="panel-head">
-        <h2>1) Tamanho (obrigatório)</h2>
-        <p class="muted">Selecione 1 opção para liberar “Adicionar ao carrinho”.</p>
-      </div>
-      <div class="builder-grid" id="acaiSizes"></div>
-    </section>
-
-    <section class="panel">
-      <div class="panel-head">
-        <h2>2) Acréscimos</h2>
-        <p class="muted">Você pode escolher vários.</p>
-      </div>
-      <div class="builder-grid" id="acaiExtras"></div>
-    </section>
-
-    <section class="panel">
-      <div class="builder-footer">
-        <div>
-          <div class="muted">Total do item</div>
-          <div class="builder-total" id="acaiTotal">R$ 0,00</div>
-        </div>
-
-        <button class="btn primary" id="addAcaiToCart" disabled>
-          Adicionar ao carrinho
-        </button>
-      </div>
-
-      <div style="margin-top:10px">
-        <a class="btn light" href="finalizar.html" style="width:100%">Ir para Finalizar</a>
-      </div>
-    </section>
-  </main>
-
-  <a class="wa-float" id="waFloat" href="#" aria-label="WhatsApp">
-    <img src="img/whatsapp.png" alt="WhatsApp" onerror="this.remove(); this.parentElement.textContent='WhatsApp';">
-  </a>
-
-  <div class="sticky-cta" id="stickyCTA" hidden>
-    <button class="cta" id="ctaOpenCart" type="button">
-      <span>Ver carrinho</span>
-      <strong id="ctaTotal">R$ 0,00</strong>
-    </button>
-    <a class="cta primary" href="finalizar.html">Finalizar</a>
-  </div>
-
-  <!-- Carrinho (mesmo do index) -->
-  <aside class="drawer" id="cartDrawer" aria-hidden="true">
-    <div class="drawer-backdrop" id="closeCartBackdrop"></div>
-    <div class="drawer-panel" role="dialog" aria-modal="true" aria-label="Carrinho">
-      <div class="drawer-head">
-        <div>
-          <h3>Seu carrinho</h3>
-          <p class="muted">Itens + taxa (se entrega)</p>
-        </div>
-        <button class="icon-btn" id="closeCart" aria-label="Fechar">✕</button>
-      </div>
-
-      <div class="drawer-body">
-        <div class="delivery-toggle">
-          <button class="dt-btn" id="modeEntrega" type="button">🚚 Entrega</button>
-          <button class="dt-btn" id="modeRetirar" type="button">🏬 Retirar</button>
-        </div>
-
-        <div id="cartItems"></div>
-      </div>
-
-      <div class="drawer-foot">
-        <div class="totals">
-          <div class="row"><span>Subtotal</span><strong id="subTotal">R$ 0,00</strong></div>
-          <div class="row"><span>Taxa</span><strong id="deliveryFee">R$ 0,00</strong></div>
-          <div class="row total"><span>Total</span><strong id="grandTotal">R$ 0,00</strong></div>
-          <div class="mini muted">⏱️ Tempo médio: <span id="etaText">30–60 min</span></div>
-        </div>
-
-        <div class="drawer-actions">
-          <button class="btn light" id="clearCart" type="button">Limpar</button>
-          <a class="btn primary" href="finalizar.html">Finalizar</a>
-        </div>
-      </div>
-    </div>
-  </aside>
-
-  <script src="js/data.js"></script>
-  <script src="js/cart.js"></script>
-  <script src="js/app.js"></script>
-
-  <!-- Script da página (visual e carrinho) -->
-  <script>
-    const ACaiData = (window.DATA && window.DATA.monteAcai) ? window.DATA.monteAcai : {
+    // Fallback (garante que nunca fica vazio)
+    return {
       sizes: [
         { id:"300",  name:"300ml",  price:12.00 },
         { id:"500",  name:"500ml",  price:18.00 },
@@ -144,50 +39,57 @@
         { id:"mel", name:"Mel", price:3.00 }
       ]
     };
+  }
 
-    const money = (v)=> v.toLocaleString("pt-BR",{style:"currency",currency:"BRL"});
-    const $ = (s)=> document.querySelector(s);
+  function makeChoiceCard({title, sub, price, active, onClick}) {
+    const btn = document.createElement("button");
+    btn.type = "button";
+    btn.className = "choice" + (active ? " active" : "");
+    btn.innerHTML = `
+      <div class="choice-left">
+        <div class="choice-title">${title}</div>
+        <div class="choice-sub muted">${sub || ""}</div>
+      </div>
+      <div class="choice-price">${money(price)}</div>
+    `;
+    btn.addEventListener("click", onClick);
+    return btn;
+  }
+
+  function boot(){
+    const sizesEl  = $("#acaiSizes");
+    const extrasEl = $("#acaiExtras");
+    const totalEl  = $("#acaiTotal");
+    const btnAdd   = $("#addAcaiToCart");
+
+    // Se não achou elementos, não tenta rodar (evita quebrar)
+    if(!sizesEl || !extrasEl || !totalEl || !btnAdd) return;
+
+    const DATA = getBuilderData();
 
     let selectedSize = null;
     const selectedExtras = new Set();
 
-    function makeChoiceCard({title, sub, price, active, onClick}) {
-      const btn = document.createElement("button");
-      btn.type = "button";
-      btn.className = "choice" + (active ? " active" : "");
-      btn.innerHTML = `
-        <div class="choice-left">
-          <div class="choice-title">${title}</div>
-          <div class="choice-sub muted">${sub || ""}</div>
-        </div>
-        <div class="choice-price">${money(price)}</div>
-      `;
-      btn.addEventListener("click", onClick);
-      return btn;
-    }
-
     function calcTotal(){
       let t = 0;
-      if(selectedSize) t += selectedSize.price;
+      if(selectedSize) t += Number(selectedSize.price||0);
       for(const id of selectedExtras){
-        const it = ACaiData.extras.find(e=>e.id===id);
-        if(it) t += it.price;
+        const it = DATA.extras.find(e=>e.id===id);
+        if(it) t += Number(it.price||0);
       }
       return t;
     }
 
-    function updateTotal(){
-      $("#acaiTotal").textContent = money(calcTotal());
-      $("#addAcaiToCart").disabled = !selectedSize;
+    function update(){
+      totalEl.textContent = money(calcTotal());
+      btnAdd.disabled = !selectedSize;
     }
 
     function render(){
-      const sizesEl  = $("#acaiSizes");
-      const extrasEl = $("#acaiExtras");
       sizesEl.innerHTML = "";
       extrasEl.innerHTML = "";
 
-      ACaiData.sizes.forEach(s=>{
+      DATA.sizes.forEach(s=>{
         sizesEl.appendChild(makeChoiceCard({
           title: s.name,
           sub: "Base do açaí",
@@ -195,12 +97,12 @@
           active: selectedSize?.id === s.id,
           onClick: ()=>{
             selectedSize = s;
-            render(); // simples e estável
+            render();
           }
         }));
       });
 
-      ACaiData.extras.forEach(x=>{
+      DATA.extras.forEach(x=>{
         const on = selectedExtras.has(x.id);
         extrasEl.appendChild(makeChoiceCard({
           title: x.name,
@@ -215,42 +117,54 @@
         }));
       });
 
-      updateTotal();
+      update();
     }
 
-    function getCart(){
-      if(typeof window.cartGet === "function") return window.cartGet();
-      try{ return JSON.parse(localStorage.getItem("lp_cart") || "[]"); }catch(e){ return []; }
-    }
-    function setCart(c){
-      if(typeof window.cartSet === "function") return window.cartSet(c);
-      localStorage.setItem("lp_cart", JSON.stringify(c));
-    }
-
-    $("#addAcaiToCart").addEventListener("click", ()=>{
+    btnAdd.addEventListener("click", ()=>{
       if(!selectedSize) return;
 
-      const extrasArr = Array.from(selectedExtras).map(id=>{
-        const it = ACaiData.extras.find(e=>e.id===id);
-        return it ? { id: it.id, name: it.name, price: it.price } : null;
-      }).filter(Boolean);
+      const extrasArr = Array.from(selectedExtras)
+        .map(id => DATA.extras.find(e=>e.id===id))
+        .filter(Boolean);
+
+      const extrasTxt = extrasArr.length
+        ? extrasArr.map(e=>e.name).join(", ")
+        : "sem adicionais";
 
       const item = {
-        id: "monte-acai-" + Date.now(),
+        key: `CUSTOM:${selectedSize.id}:${extrasArr.map(e=>e.id).sort().join("+") || "0"}`,
         name: `Monte seu Açaí — ${selectedSize.name}`,
-        qty: 1,
+        desc: `Adicionais: ${extrasTxt}`,
         price: calcTotal(),
-        meta: { size: selectedSize, extras: extrasArr }
+        qty: 1
       };
 
-      const cart = getCart();
-      cart.push(item);
-      setCart(cart);
+      // ✅ Usa o carrinho REAL do seu projeto (cart.js)
+      if(typeof window.addToCart === "function"){
+        window.addToCart(item);
+      }else{
+        // fallback se alguém apagar cart.js
+        try{
+          const k = "acai_cart_v2";
+          const cart = JSON.parse(localStorage.getItem(k) || "[]");
+          cart.push(item);
+          localStorage.setItem(k, JSON.stringify(cart));
+        }catch(e){}
+      }
 
+      // Atualiza UI global do seu app, se existir
+      if(typeof window.renderCartDrawer === "function") window.renderCartDrawer();
+      if(typeof window.renderCartEverywhere === "function") window.renderCartEverywhere();
+
+      // Abre carrinho (se existir openCart no seu app)
       if(typeof window.openCart === "function") window.openCart();
     });
 
     render();
-  </script>
-</body>
-</html>
+  }
+
+  // garante que roda mesmo se algum JS anterior atrasar
+  if(document.readyState === "loading") document.addEventListener("DOMContentLoaded", boot);
+  else boot();
+})();
+</script>
