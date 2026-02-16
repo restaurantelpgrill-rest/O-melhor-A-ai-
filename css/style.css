@@ -1,3 +1,11 @@
+/* =========================================================
+   LP Grill Açaí — style.css (CORRIGIDO + ORGANIZADO)
+   - Tema premium roxo/verde
+   - Sem conflitos (choice duplicado removido)
+   - Sticky CTA + Whats sem atrapalhar
+   - Monte seu Açaí com mesma identidade do index
+   ========================================================= */
+
 :root{
   --bg:#f5f3ff;
   --card:#ffffff;
@@ -16,14 +24,16 @@
   --radius:18px;
 }
 
+/* =============== BASE =============== */
 *{box-sizing:border-box}
 html,body{height:100%}
 body{
   margin:0;
   font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
-  background: radial-gradient(1200px 500px at 10% -10%, rgba(124,58,237,.22), transparent 50%),
-              radial-gradient(900px 400px at 90% 0%, rgba(34,197,94,.12), transparent 55%),
-              var(--bg);
+  background:
+    radial-gradient(1200px 500px at 10% -10%, rgba(124,58,237,.22), transparent 50%),
+    radial-gradient(900px 400px at 90% 0%, rgba(34,197,94,.12), transparent 55%),
+    var(--bg);
   color:var(--text);
 }
 a{color:inherit; text-decoration:none}
@@ -34,8 +44,16 @@ h1,h2,h3{margin:0}
 p{margin:6px 0 0}
 .link{color:var(--purple); font-weight:900}
 
-/* COVER */
-.cover{position:relative; padding:16px 16px 14px; border-bottom:1px solid rgba(231,231,238,.9); overflow:hidden}
+/* Dá espaço pro sticky CTA no fim da tela */
+body.app{ padding-bottom: 110px; }
+
+/* =============== COVER / HEADER =============== */
+.cover{
+  position:relative;
+  padding:16px 16px 14px;
+  border-bottom:1px solid rgba(231,231,238,.9);
+  overflow:hidden
+}
 .cover-bg{
   position:absolute; inset:-2px;
   background:
@@ -98,16 +116,20 @@ p{margin:6px 0 0}
   backdrop-filter: blur(10px);
 }
 
-/* subinfo (para páginas internas) */
-.subinfo{
-  padding-top:10px;
-  padding-bottom:0;
-}
-.subinfo .pill{font-size:12px; padding:7px 10px}
+/* subinfo (páginas internas) */
+.subinfo{ padding-top:10px; padding-bottom:0; }
+.subinfo .pill{ font-size:12px; padding:7px 10px; }
 
-/* GRID */
-.grid{display:grid; grid-template-columns: repeat(2, minmax(0,1fr)); gap:12px; margin-top:6px}
-@media (min-width: 860px){ .grid{grid-template-columns: repeat(3, minmax(0,1fr))} }
+/* =============== GRID HOME =============== */
+.grid{
+  display:grid;
+  grid-template-columns: repeat(2, minmax(0,1fr));
+  gap:12px;
+  margin-top:6px
+}
+@media (min-width: 860px){
+  .grid{grid-template-columns: repeat(3, minmax(0,1fr))}
+}
 
 .tile{
   position:relative;
@@ -123,8 +145,9 @@ p{margin:6px 0 0}
 .tile:hover{transform: translateY(-1px); box-shadow: 0 22px 52px rgba(17,24,39,.14)}
 .tile::before{
   content:""; position:absolute; inset:-2px;
-  background: radial-gradient(260px 140px at 18% 20%, rgba(124,58,237,.20), transparent 65%),
-              radial-gradient(260px 140px at 86% 15%, rgba(239,68,68,.12), transparent 65%);
+  background:
+    radial-gradient(260px 140px at 18% 20%, rgba(124,58,237,.20), transparent 65%),
+    radial-gradient(260px 140px at 86% 15%, rgba(239,68,68,.12), transparent 65%);
   pointer-events:none;
 }
 .tile > *{position:relative; z-index:1}
@@ -135,14 +158,27 @@ p{margin:6px 0 0}
   border-color: rgba(34,197,94,.65);
   box-shadow: 0 22px 55px rgba(34,197,94,.12), var(--shadow);
 }
-.pulse{animation: pulse 1.6s infinite}
+
+/* animação pulse apenas em telas maiores (no mobile pesa/atrapalha) */
+@media (min-width: 520px){
+  .pulse{animation: pulse 1.6s infinite}
+}
 @keyframes pulse{
   0%{transform: translateY(0); box-shadow: var(--shadow)}
   50%{transform: translateY(-1px); box-shadow: 0 26px 60px rgba(109,40,217,.14)}
   100%{transform: translateY(0); box-shadow: var(--shadow)}
 }
 
-/* pagebar */
+/* Mobile: tiles mais compactos */
+@media (max-width: 520px){
+  .grid{ gap: 10px; }
+  .tile{ padding: 14px 14px; border-radius: 16px; }
+  .tile-ico{ font-size: 24px; margin-bottom: 8px; }
+  .tile-title{ font-size: 14px; }
+  .tile-sub{ font-size: 12px; }
+}
+
+/* =============== PAGEBAR (se usar em páginas internas) =============== */
 .pagebar{
   position:sticky; top:0; z-index:30;
   display:flex; align-items:center; justify-content:space-between; gap:10px;
@@ -163,10 +199,16 @@ p{margin:6px 0 0}
 .page-title h1{font-size:16px}
 .page-title p{font-size:12px; color:var(--muted)}
 
-/* products */
-.product-grid{display:grid; grid-template-columns: repeat(1, minmax(0,1fr)); gap:12px; margin-top:10px}
-@media(min-width:820px){ .product-grid{grid-template-columns: repeat(2, minmax(0,1fr))} }
-
+/* =============== PRODUCTS =============== */
+.product-grid{
+  display:grid;
+  grid-template-columns: repeat(1, minmax(0,1fr));
+  gap:12px;
+  margin-top:10px
+}
+@media(min-width:820px){
+  .product-grid{grid-template-columns: repeat(2, minmax(0,1fr))}
+}
 .product{
   background: rgba(255,255,255,.82);
   border:1px solid rgba(199,201,209,.9);
@@ -195,7 +237,7 @@ p{margin:6px 0 0}
   background: rgba(255,255,255,.7);
 }
 
-/* buttons */
+/* =============== BUTTONS =============== */
 .btn{
   border:0; border-radius:14px; padding:12px 14px;
   font-weight:900; cursor:pointer;
@@ -205,7 +247,11 @@ p{margin:6px 0 0}
   background: linear-gradient(180deg, var(--green), #16a34a);
   color:#fff; box-shadow: 0 16px 30px rgba(34,197,94,.22);
 }
-.btn.light{background: rgba(255,255,255,.8); border:1px solid rgba(199,201,209,.85)}
+.btn.light{
+  background: rgba(255,255,255,.8);
+  border:1px solid rgba(199,201,209,.85)
+}
+.btn[disabled]{opacity:.55; cursor:not-allowed}
 .ghost-btn{
   width:100%; margin-top:12px; padding:12px 14px;
   border-radius:14px; border:1px dashed rgba(199,201,209,.9);
@@ -218,7 +264,7 @@ p{margin:6px 0 0}
   border-radius:14px; padding:10px 12px; cursor:pointer;
 }
 
-/* drawer */
+/* =============== DRAWER / CART =============== */
 .drawer{position:fixed; inset:0; z-index:80; display:none}
 .drawer.open{display:block}
 .drawer-backdrop{position:absolute; inset:0; background: rgba(17,24,39,.45)}
@@ -250,10 +296,8 @@ p{margin:6px 0 0}
 .drawer-actions{display:flex; gap:10px}
 .drawer-actions .btn{flex:1}
 
-/* delivery toggle */
-.delivery-toggle{
-  display:flex; gap:10px; margin-bottom:10px;
-}
+/* toggle entrega/retirar */
+.delivery-toggle{ display:flex; gap:10px; margin-bottom:10px; }
 .delivery-toggle.small{margin:0}
 .dt-btn{
   flex:1;
@@ -269,7 +313,7 @@ p{margin:6px 0 0}
   box-shadow: 0 14px 26px rgba(34,197,94,.12);
 }
 
-/* cart items */
+/* itens do carrinho */
 .citem{
   border:1px solid rgba(199,201,209,.75);
   border-radius:16px;
@@ -288,11 +332,12 @@ p{margin:6px 0 0}
   background: rgba(255,255,255,.8);
   cursor:pointer; font-weight:900;
 }
-.remove{background: rgba(239,68,68,.10); border:1px solid rgba(239,68,68,.25); color: var(--red)}
-.note{
-  margin-top:10px;
-  display:flex; flex-direction:column; gap:6px;
+.remove{
+  background: rgba(239,68,68,.10);
+  border:1px solid rgba(239,68,68,.25);
+  color: var(--red)
 }
+.note{ margin-top:10px; display:flex; flex-direction:column; gap:6px; }
 .note label{font-size:12px; color:var(--muted); font-weight:900}
 .note textarea{
   width:100%;
@@ -305,60 +350,7 @@ p{margin:6px 0 0}
   min-height:42px;
 }
 
-/* builder */
-.builder{display:grid; gap:12px; margin-top:10px}
-.cardx{
-  background: rgba(255,255,255,.84);
-  border:1px solid rgba(199,201,209,.9);
-  border-radius: var(--radius);
-  box-shadow: var(--shadow);
-  padding:14px;
-}
-.cardx h2{font-size:14px; margin-bottom:10px}
-.sizes{display:grid; grid-template-columns: repeat(2, minmax(0,1fr)); gap:10px}
-@media(min-width:820px){ .sizes{grid-template-columns: repeat(4, minmax(0,1fr))} }
-.choice{
-  border:1px solid rgba(199,201,209,.85);
-  background: rgba(245,243,255,.65);
-  border-radius:16px;
-  padding:10px;
-  cursor:pointer;
-  transition: transform .12s ease, border-color .12s ease;
-}
-.choice:hover{transform: translateY(-1px)}
-.choice.active{
-  border-color: rgba(34,197,94,.55);
-  box-shadow: 0 14px 26px rgba(34,197,94,.14);
-}
-.choice .t{font-weight:900}
-.choice .s{margin-top:6px; font-size:12px; color:var(--muted)}
-
-.addons{display:grid; grid-template-columns: repeat(1, minmax(0,1fr)); gap:10px}
-@media(min-width:820px){ .addons{grid-template-columns: repeat(2, minmax(0,1fr))} }
-.addon{
-  display:flex; align-items:center; gap:10px;
-  border:1px solid rgba(199,201,209,.85);
-  background: rgba(255,255,255,.76);
-  border-radius:16px;
-  padding:10px;
-}
-.addon img{
-  width:44px; height:44px; border-radius:14px;
-  border:1px solid rgba(199,201,209,.7);
-  object-fit:cover;
-  background: rgba(109,40,217,.10);
-}
-.addon .ainfo{flex:1; min-width:0}
-.addon .aname{font-weight:900}
-.addon .aprice{font-size:12px; color:var(--muted); margin-top:4px}
-.addon input{width:18px; height:18px}
-
-.sticky-buy{position:sticky; bottom:74px; border-color: rgba(199,201,209,.75)}
-.buyline{display:flex; align-items:center; justify-content:space-between; gap:10px}
-.buyline .btn{min-width:180px}
-.buyline .btn[disabled]{opacity:.55; cursor:not-allowed}
-
-/* checkout */
+/* =============== CHECKOUT (finalizar) =============== */
 .checkout{display:grid; gap:12px; margin-top:10px}
 .checkout-items{display:grid; gap:10px}
 .checkout-head{display:flex; align-items:center; justify-content:space-between; gap:10px}
@@ -390,12 +382,21 @@ p{margin:6px 0 0}
 .actions{display:flex; gap:10px; margin-top:12px}
 .actions .btn{flex:1}
 
-/* reviews */
+/* =============== REVIEWS =============== */
 .reviews{margin-top:18px}
-.reviews-head{display:flex; align-items:flex-end; justify-content:space-between; gap:12px; margin-bottom:10px}
+.reviews-head{
+  display:flex; align-items:flex-end; justify-content:space-between;
+  gap:12px; margin-bottom:10px
+}
 .rating{display:flex; align-items:center; gap:8px}
-.review-cards{display:grid; grid-template-columns: repeat(1, minmax(0,1fr)); gap:10px}
-@media(min-width:820px){ .review-cards{grid-template-columns: repeat(3, minmax(0,1fr))} }
+.review-cards{
+  display:grid;
+  grid-template-columns: repeat(1, minmax(0,1fr));
+  gap:10px
+}
+@media(min-width:820px){
+  .review-cards{grid-template-columns: repeat(3, minmax(0,1fr))}
+}
 .review{
   background: rgba(255,255,255,.80);
   border:1px solid rgba(199,201,209,.85);
@@ -406,9 +407,10 @@ p{margin:6px 0 0}
 .r-top{display:flex; align-items:center; justify-content:space-between; gap:10px}
 .review p{font-size:12px; color:var(--muted); line-height:1.35}
 
-/* whatsapp float */
+/* =============== WHATS FLOAT + STICKY CTA =============== */
 .wa-float{
-  position:fixed; right:14px; bottom:78px;
+  position:fixed; right:14px;
+  bottom:84px; /* acima do sticky CTA */
   width:52px; height:52px;
   border-radius:18px;
   background: rgba(34,197,94,.95);
@@ -418,7 +420,7 @@ p{margin:6px 0 0}
 }
 .wa-float img{width:26px; height:26px}
 
-/* sticky CTA (finalizar fixo) */
+/* sticky CTA */
 .sticky-cta{
   position:fixed;
   left:12px; right:12px; bottom:12px;
@@ -449,7 +451,14 @@ p{margin:6px 0 0}
   box-shadow: 0 18px 40px rgba(34,197,94,.20);
 }
 
-/* admin list */
+/* CTA mais compacto em telas pequenas */
+@media (max-width: 520px){
+  .sticky-cta{ gap:10px; }
+  .cta{ padding: 12px 12px; font-size: 13px; }
+  .wa-float{ right: 12px; bottom: 84px; width: 52px; height: 52px; }
+}
+
+/* =============== ADMIN =============== */
 .admin-list{display:grid; gap:10px; margin-top:12px}
 .admin-item{
   border:1px solid rgba(199,201,209,.85);
@@ -457,7 +466,10 @@ p{margin:6px 0 0}
   background: rgba(255,255,255,.78);
   padding:12px;
 }
-.admin-item .head{display:flex; align-items:center; justify-content:space-between; gap:10px; margin-bottom:10px}
+.admin-item .head{
+  display:flex; align-items:center; justify-content:space-between;
+  gap:10px; margin-bottom:10px
+}
 .admin-item .head strong{font-size:13px}
 .admin-item .grid{
   display:grid; grid-template-columns:1fr 120px; gap:10px; margin:0;
@@ -472,16 +484,119 @@ p{margin:6px 0 0}
 }
 .admin-item textarea{grid-column:1 / -1; resize:none; min-height:52px}
 
-/* mobile polish */
+/* =============== MONTE SEU AÇAÍ (NOVO) =============== */
+/* Esses blocos dão o mesmo “look” do index pra página do builder */
+
+.panel{
+  background: rgba(255,255,255,.70);
+  border: 1px solid rgba(17,24,39,.08);
+  border-radius: 18px;
+  padding: 14px;
+  margin: 14px 0;
+  box-shadow: 0 10px 30px rgba(17,24,39,.06);
+}
+
+.panel-head h2{ margin:0; font-size:16px; }
+.panel-head p{ margin:8px 0 0; }
+
+.builder-grid{
+  display:grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 10px;
+  margin-top: 12px;
+}
+@media (max-width: 720px){
+  .builder-grid{ grid-template-columns: 1fr; }
+}
+
+/* Choice card (ÚNICO - sem duplicidade) */
+.choice{
+  appearance:none;
+  border: 1px solid rgba(17,24,39,.10);
+  background: linear-gradient(180deg, rgba(255,255,255,.85), rgba(255,255,255,.62));
+  border-radius: 16px;
+  padding: 12px 12px;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:12px;
+  cursor:pointer;
+  text-align:left;
+  transition: transform .12s ease, box-shadow .12s ease, border-color .12s ease;
+}
+.choice:hover{
+  transform: translateY(-1px);
+  box-shadow: 0 12px 26px rgba(17,24,39,.10);
+  border-color: rgba(99,102,241,.25);
+}
+.choice.active{
+  border-color: rgba(34,197,94,.85);
+  box-shadow: 0 0 0 3px rgba(34,197,94,.16) inset, 0 12px 26px rgba(17,24,39,.10);
+}
+
+.choice-left{min-width:0}
+.choice-title{ font-weight: 900; }
+.choice-sub{ font-size: 12px; opacity:.85; margin-top:2px; }
+.choice-price{ font-weight: 900; }
+
+.builder-footer{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:12px;
+  flex-wrap:wrap;
+}
+.builder-total{
+  font-size: 26px;
+  font-weight: 1000;
+  letter-spacing: -.3px;
+}
+
+/* botão voltar dentro do cover */
+.backlink{
+  display:inline-flex;
+  width:36px;height:36px;
+  align-items:center;justify-content:center;
+  border-radius:12px;
+  border:1px solid rgba(17,24,39,.10);
+  background: rgba(255,255,255,.65);
+  text-decoration:none;
+  color: inherit;
+  font-weight: 900;
+  margin-right:10px;
+}
+
+/* =============== MOBILE POLISH =============== */
 @media (max-width:420px){
   .page-title{display:none}
-  .buyline{flex-direction:column; align-items:stretch}
-  .buyline .btn{width:100%}
-  .sticky-buy{bottom:88px}
+  .sticky-cta{ left:10px; right:10px; bottom:10px; }
+  body.app{ padding-bottom: 120px; }
 }
-/* ========= MENU DO TOPO: menor e sem atrapalhar ========= */
+
+/* =============== MENU (caso use em outras páginas) =============== */
 .menu{
   display:flex;
   flex-wrap:wrap;
   gap:8px;
+}
+.menu a{
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  padding:10px 12px;
+  border-radius:999px;
+  border:1px solid rgba(199,201,209,.85);
+  background: rgba(255,255,255,.72);
+  font-weight:900;
+  font-size:13px;
+  line-height:1;
+  white-space:nowrap;
+}
+.menu a.active{
+  border-color: rgba(34,197,94,.55);
+  box-shadow: 0 14px 26px rgba(34,197,94,.12);
+}
+@media (max-width:480px){
+  .menu{ gap:6px; }
+  .menu a{ padding:9px 10px; font-size:12px; }
 }
