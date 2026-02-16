@@ -600,3 +600,32 @@ body.app{ padding-bottom: 110px; }
   .menu{ gap:6px; }
   .menu a{ padding:9px 10px; font-size:12px; }
 }
+/* ================================
+   AJUSTES DE HOJE (INDEX + MONTE)
+   ================================ */
+
+/* espaço garantido pro sticky não cobrir conteúdo */
+body.app{ padding-bottom: 120px; }
+
+/* Whats sempre acima do sticky */
+.wa-float{ bottom: 84px; right: 12px; }
+
+/* Sticky menor e mais "app" no mobile */
+@media (max-width: 520px){
+  .sticky-cta{
+    left:10px; right:10px; bottom:10px;
+    gap:10px;
+  }
+  .cta{
+    padding: 12px 12px;
+    border-radius: 14px;
+    font-size: 13px;
+  }
+}
+/* Tiles mais compactos no mobile (não fica gigante) */
+@media (max-width: 520px){
+  .tile{ padding: 14px 14px; border-radius: 16px; }
+  .tile-ico{ font-size: 24px; }
+  .tile-title{ font-size: 14px; }
+  .tile-sub{ font-size: 12px; }
+}
