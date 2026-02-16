@@ -27,14 +27,17 @@
       </button>
     </div>
 
-    <div class="cover-info" id="infoBar"></div>
+    <div class="cover-info" id="infoBar">
+      <!-- fallback caso app.js não injete -->
+      <!-- (fica vazio sem quebrar layout) -->
+    </div>
 
     <div class="cover-search">
       <input id="homeSearch" type="search" placeholder="Buscar categoria..." autocomplete="off" />
     </div>
   </header>
 
-  <main class="container">
+  <main class="container" id="main">
     <section class="grid" id="homeGrid">
       <a class="tile pulse" href="acais-prontos.html" data-key="acai açaí pronto prontos">
         <div class="tile-ico">🥣</div>
