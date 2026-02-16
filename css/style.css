@@ -485,26 +485,3 @@ p{margin:6px 0 0}
   flex-wrap:wrap;
   gap:8px;
 }
-
-.menu a{
-  padding:10px 12px !important;
-  font-size:13px !important;
-  border-radius:999px !important;
-  line-height:1 !important;
-  white-space:nowrap;
-}
-
-/* botão "Finalizar Pedido" menor e com destaque controlado */
-.menu a:last-child{
-  padding:10px 12px !important;
-  font-weight:800;
-}
-
-/* no celular: diminui mais ainda */
-@media (max-width: 480px){
-  .menu{ gap:6px; }
-  .menu a{
-    padding:9px 10px !important;
-    font-size:12px !important;
-  }
-}
